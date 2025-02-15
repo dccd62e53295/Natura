@@ -68,11 +68,12 @@ dependencies {
     deobfCompile ("slimeknights:TConstruct:${minecraft_version}-${tconstruct_version}") {
         transitive = false
     }
-
+/*
     deobfCompile ("mcp.mobius.waila:Hwyla:${hwyla_version}_${minecraft_version_short}") {
         transitive = false
     }
-
+*/
+compile files( "libs/Hwyla-1.8.26-B42_1.12.2-deobf.jar" )
     deobfCompile ("mezz.jei:jei_${minecraft_version}:${jei_version}") {
         transitive = false
     }
@@ -125,6 +126,11 @@ jar {
     finalizedBy reobfJar
 }
 
+task deobfJar(type: Jar) {
+    from sourceSets.main.output
+    classifier = 'deobf'
+}
+
 // because the normal output has been made to be obfuscated
 task sourcesJar(type: Jar) {
     from sourceSets.main.allJava
@@ -132,12 +138,13 @@ task sourcesJar(type: Jar) {
 }
 
 artifacts {
+archives deobfJar
     archives sourcesJar
 }
 publishing {
     publications {
         mavenJava(MavenPublication) {
-            artifact jar
+	    artifact jar
             artifact sourcesJar
         }
     }
